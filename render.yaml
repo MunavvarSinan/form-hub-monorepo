@@ -11,7 +11,8 @@ services:
     branch: main
     buildCommand: pnpm && pnpm build --filer=api
     startCommand: cd apps/api; pnpm start
-    domains: fh-prod-backend.render.com
+    domains: 
+      - fh-prod-backend.render.com
     envVars:
       - key: DATABASE_URL
         fromDatabase: # This is to get the data base url from the render
