@@ -1,0 +1,51 @@
+services:
+  - type: web
+    name: fh-prod-backend1
+    env: node
+    repo: https://github.com/MunavvarSinan/form-hub-monorepo.git
+    buildFilter:
+      paths:
+        - apps/api/**
+      # this specifies that rebuild this service if and only if something changed apps/api folder
+      # if not do not rebuild this services until any change in that folder occur
+    branch: main
+    buildCommand: pnpm && pnpm build --filer=api
+    startCommand: cd apps/api; pnpm start
+    domains: fh-prod-backend.render.com
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase: # This is to get the data base url from the render
+          name: fh-prod-db1
+          property: connectionString
+
+      - key: REDIS_URL
+        fromService: # This is to get the redis url from the render ( we use a property here called connectionString to get the redis url)
+          name: fh-prod-redis1
+          property: connectionString
+
+  - type: web
+    name: fh-prod-frontend1
+    env: static
+    repo: https://github.com/MunavvarSinan/form-hub-monorepo.git
+     buildFilter:
+      paths:
+        - apps/web/**
+    buildCommand: pnpm && pnpm build --filer=web
+    buildDir: ./apps/web/out
+    routes:
+      # this is to show only the html page or redirect to the home page if any other url entered like https://url/something if this has entered it will show only the build index file
+      - type: rewrite 
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: GRAPHQL_HOST
+        fromDatabase:
+          name: fh-prod-db1
+          type: web
+          host: host
+
+  - type: redis
+    name: fh-prod-redis1
+
+databases:
+  - name: fh-prod-db1
