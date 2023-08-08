@@ -27,13 +27,13 @@ services:
 
   - type: web
     name: fh-prod-frontend1
-    env: static
+    runtime: static
     repo: https://github.com/MunavvarSinan/form-hub-monorepo.git
     buildFilter:
       paths:
         - apps/web/**
     buildCommand: pnpm && pnpm build --filer=web
-    buildDir: ./apps/web/out
+    staticPublishPath: ./apps/web/out
     routes:
       # this is to show only the html page or redirect to the home page if any other url entered like https://url/something if this has entered it will show only the build index file
       - type: rewrite 
