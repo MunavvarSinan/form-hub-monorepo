@@ -30,7 +30,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres@postgres/backend
       PORT: 8000
-      REDIS_HOST: redis
+      REDIS_URL : redis://redis:6379
     # networks:
     #   - form_hub_network
 # Define a network, which allows containers to communicate
