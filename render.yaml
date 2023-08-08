@@ -21,13 +21,14 @@ services:
       - key: REDIS_URL
         fromService: # This is to get the redis url from the render ( we use a property here called connectionString to get the redis url)
           name: fh-prod-redis1
+          type: redis
           property: connectionString
 
   - type: web
     name: fh-prod-frontend1
     env: static
     repo: https://github.com/MunavvarSinan/form-hub-monorepo.git
-     buildFilter:
+    buildFilter:
       paths:
         - apps/web/**
     buildCommand: pnpm && pnpm build --filer=web
@@ -46,6 +47,7 @@ services:
 
   - type: redis
     name: fh-prod-redis1
+    ipAllowList: []
 
 databases:
   - name: fh-prod-db1
