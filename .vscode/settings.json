@@ -5,7 +5,7 @@
     },
     "triggerTaskOnSave.tasks": {
         "restart backend": [
-            "src/**/*"
+            "apps/api/**/*"
         ]
     },
     "typescript.tsdk": "node_modules/typescript/lib",
